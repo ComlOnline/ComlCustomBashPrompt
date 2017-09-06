@@ -1,6 +1,8 @@
+#! /bin/bash
 
 
 sudo apt-get update
+sudo apt-get install -y figlet
 
 sudo rm /etc/update-motd.d/10-help-text
 sudo rm /etc/update-motd.d/00-header
