@@ -14,9 +14,9 @@ cat <<EOF1 | sudo tee /etc/update-motd.d/00-logo
 #! /bin/bash
 
 figlet "Hullfire Systems"
-EOF
+EOF1
 
-cat <<EOF | sudo tee /etc/update-motd.d/01-info
+cat <<EOF3 | sudo tee /etc/update-motd.d/01-info
 #!/bin/sh
 
 UPTIME_DAYS=$(expr `cat /proc/uptime | cut -d '.' -f1` % 31556926 / 86400)
@@ -44,7 +44,7 @@ cat << EOF
 	External Address: `ifconfig ens160 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}'`
 	Internal Address: `ifconfig ens192 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}'`
 EOF
-EOF1
+EOF3
 
 cat <<EOF2 >> ~/.bashrc
 export PS1="[\[$(tput sgr0)\]\[\033[38;5;196m\]\h\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]\[\033[38;5;243m\]\u\[$(tput sgr0)\]\[\033[38;5;15m\]] [\[$(tput sgr0)\]\[\033[38;5;196m\]\w\]\[\033[38;5;15m\]] \\$\[$(tput sgr0)\]"
