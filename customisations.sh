@@ -53,5 +53,3 @@ EOF2
 
 sudo chmod +x /etc/update-motd.d/00-logo
 sudo chmod +x /etc/update-motd.d/01-info
-
-rm ./customisations.sh
