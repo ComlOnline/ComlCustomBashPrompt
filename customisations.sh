@@ -13,7 +13,7 @@ sudo rm /etc/update-motd.d/01-info
 cat <<EOF1 | sudo tee /etc/update-motd.d/00-logo
 #! /bin/bash
 
-figlet "Hullfire Systems"
+figlet "Coml Systems"
 EOF1
 
 cat <<EOF3 | sudo tee /etc/update-motd.d/01-info
