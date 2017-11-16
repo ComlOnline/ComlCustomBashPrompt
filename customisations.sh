@@ -14,14 +14,14 @@ sudo rm /etc/update-motd.d/01-distro
 sudo rm /etc/update-motd.d/01-info
 
 #Script to make the logo
-sudo cat <<EOF00 >> /etc/update-motd.d/00-logo
+sudo cat <<'EOF00' >> /etc/update-motd.d/00-logo
 #! /bin/bash
 
 figlet "Coml Systems"
 EOF00
 
 #Script to display system info
-sudo cat <<EOF01 >> /etc/update-motd.d/01-info
+sudo cat <<'EOF01' >> /etc/update-motd.d/01-info
 #!/bin/sh
 
 UPTIME_DAYS=$(expr `cat /proc/uptime | cut -d '.' -f1` % 31556926 / 86400)
@@ -62,7 +62,7 @@ sed -i.bak '/MYGREY="\[\033[38;5;243m\]"/d' $HOME/.bashrc
 sed -i.bak '/MYWHITE="\[\033[38;5;15m\]"/d' $HOME/.bashrc
 
 #Colour for bash
-cat <<EOFBASHRC >> ~/.bashrc
+cat <<'EOFBASHRC' >> ~/.bashrc
 MYRED="\[\033[38;5;196m\]"
 MYGREY="\[\033[38;5;243m\]"
 MYWHITE="\[\033[38;5;15m\]"
