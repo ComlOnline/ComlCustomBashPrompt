@@ -57,9 +57,9 @@ sudo chmod +x /etc/update-motd.d/01-info
 
 #Clean out other shell customisations
 sed -i.bak '/export PS1/d' $HOME/.bashrc
-sed -i.bak '/MYRED="\[\033[38;5;196m\]"/d' $HOME/.bashrc
-sed -i.bak '/MYGREY="\[\033[38;5;243m\]"/d' $HOME/.bashrc
-sed -i.bak '/MYWHITE="\[\033[38;5;15m\]"/d' $HOME/.bashrc
+sed -i.bak '/MYRED="\\\[\\033\[38;5;196m\\\]"/d' $HOME/.bashrc
+sed -i.bak '/MYGREY="\\\[\\033\[38;5;243m\\\]"/d' $HOME/.bashrc
+sed -i.bak '/MYWHITE="\\\[\\033\[38;5;15m\\\]"/d' $HOME/.bashrc
 
 #Colour for bash
 cat <<'EOFBASHRC' | tee -a ~/.bashrc
