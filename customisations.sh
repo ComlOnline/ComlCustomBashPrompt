@@ -1,22 +1,27 @@
 #! /bin/bash
 
-
+#Update the Repositories
 sudo apt-get update
+
+#Install figlet
 sudo apt-get install -y figlet
 
+#Remove previous versions and other motd things
 sudo rm /etc/update-motd.d/10-help-text
 sudo rm /etc/update-motd.d/00-header
 sudo rm /etc/update-motd.d/00-logo
 sudo rm /etc/update-motd.d/01-distro
 sudo rm /etc/update-motd.d/01-info
 
-cat <<EOF1 | sudo tee /etc/update-motd.d/00-logo
+#Script to make the logo
+cat <<EOF00 >> /etc/update-motd.d/00-logo
 #! /bin/bash
 
 figlet "Coml Systems"
-EOF1
+EOF00
 
-cat <<EOF3 | sudo tee /etc/update-motd.d/01-info
+#Script to display system info
+cat <<EOF01 >> /etc/update-motd.d/01-info
 #!/bin/sh
 
 UPTIME_DAYS=$(expr `cat /proc/uptime | cut -d '.' -f1` % 31556926 / 86400)
@@ -44,12 +49,22 @@ cat << EOF
 	External Address: `ifconfig ens160 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}'`
 	Internal Address: `ifconfig ens192 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}'`
 EOF
-EOF3
+EOF01
 
-cat <<EOF2 >> ~/.bashrc
-export PS1="[\[$(tput sgr0)\]\[\033[38;5;196m\]\h\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]\[\033[38;5;243m\]\u\[$(tput sgr0)\]\[\033[38;5;15m\]] [\[$(tput sgr0)\]\[\033[38;5;196m\]\w\]\[\033[38;5;15m\]] "
-EOF2
-
-
+#Make the above executable
 sudo chmod +x /etc/update-motd.d/00-logo
 sudo chmod +x /etc/update-motd.d/01-info
+
+#Clean out other shell customisations
+sed -i.bak '/export PS1/d' $HOME/.bashrc
+
+#Colour for bash
+cat <<EOFBASHRC >> ~/.bashrc
+
+MYRED="\[\033[38;5;196m\]"
+MYGREY="\[\033[38;5;243m\]"
+MYWHITE="\[\033[38;5;15m\]"
+
+export PS1="$MYWHITE[$MYRED\h$MYGREY \u$MYWHITE] [$MYRED\w$MYWHITE] "
+
+EOFBASHRC
