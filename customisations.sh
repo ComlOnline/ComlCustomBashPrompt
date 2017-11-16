@@ -20,6 +20,7 @@ cat <<'EOF00' | sudo tee /etc/update-motd.d/00-logo
 figlet "Coml Systems"
 EOF00
 
+normalinfo() {
 #Script to display system info
 cat <<'EOF01' | sudo tee /etc/update-motd.d/01-info
 #!/bin/sh
@@ -50,6 +51,46 @@ cat << EOF
 	Internal Address: `ifconfig ens192 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}'`
 EOF
 EOF01
+}
+
+piinfo() {
+#Script to display system info if pi
+cat <<'EOFPI' | sudo tee /etc/update-motd.d/01-info
+#!/bin/sh
+
+UPTIME_DAYS=$(expr `cat /proc/uptime | cut -d '.' -f1` % 31556926 / 86400)
+UPTIME_HOURS=$(expr `cat /proc/uptime | cut -d '.' -f1` % 31556926 % 86400 / 3600)
+UPTIME_MINUTES=$(expr `cat /proc/uptime | cut -d '.' -f1` % 31556926 % 86400 % 3600 / 60)
+
+cat << EOF
+%                                                                            %
+%+++++++++++++++++++++++++++++++ SERVER INFO ++++++++++++++++++++++++++++++++%
+%                                                                            %
+	Name: `hostname`
+	Uptime: $UPTIME_DAYS days, $UPTIME_HOURS hours, $UPTIME_MINUTES minutes
+
+	CPU: `cat /proc/cpuinfo | grep 'model name' | head -1 | cut -d':' -f2`
+	Memory: `free -m | head -n 2 | tail -n 1 | awk {'print $2'}`M
+	Swap: `free -m | tail -n 1 | awk {'print $2'}`M
+	Disk: `df -h / | awk '{ a = $2 } END { print a }'`
+	Distro: `lsb_release -s -d` with `uname -r`
+
+	CPU Load: `cat /proc/loadavg | awk '{print $1 ", " $2 ", " $3}'`
+	Free Memory: `free -m | head -n 2 | tail -n 1 | awk {'print $4'}`M
+	Free Swap: `free -m | tail -n 1 | awk {'print $4'}`M
+	Free Disk: `df -h / | awk '{ a = $2 } END { print a }'`
+
+	Ethernet Address: `ifconfig eth0 | grep "inet" | awk 'NR==1{print $2}'`
+	Wireless Address: `ifconfig wlan0 | grep "inet" | awk 'NR==1{print $2}'`
+EOF
+EOFPI
+}
+
+if ! lsb_release -s -d | grep -q Raspbian; then
+    piinfo
+else
+	narmalinfo
+fi
 
 #Make the above executable
 sudo chmod +x /etc/update-motd.d/00-logo
